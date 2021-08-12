@@ -16,7 +16,7 @@ You'll need:
 
 Then connect:
 | ESP gpio num | ESP pin label | CC1101 pin |
-| ------------ | ------------- | ---------- |
+|--------------|---------------|------------|
 | Vcc          | 3.3v          | Vcc        |
 | Gnd          | Gnd           | Gnd        |
 | GPIO13       | D7            | MOSI       |
