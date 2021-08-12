@@ -17,14 +17,14 @@ You'll need:
 Then connect:
 | ESP gpio num | ESP pin label | CC1101 pin |
 | ------------ | ------------- | ---------- |
-| Vcc | 3.3v | Vcc |
-| Gnd | Gnd  | Gnd |
-| GPIO13 | D7 | MOSI |
-| GPIO14 | D5 | SCLK |
-| GPIO12 | D6 | MISO |
-| GPIO4 | D2 | GDO2* |
-| GPIO5 | D1 | GDO0 |
-| GPIO15 | D8 | CSn
+| Vcc          | 3.3v          | Vcc        |
+| Gnd          | Gnd           | Gnd        |
+| GPIO13       | D7            | MOSI       |
+| GPIO14       | D5            | SCLK       |
+| GPIO12       | D6            | MISO       |
+| GPIO4        | D2            | GDO2*      |
+| GPIO5        | D1            | GDO0       |
+| GPIO15       | D8            | CSn        |
 
 *actually not sure if gdo2 is used in my code
 
