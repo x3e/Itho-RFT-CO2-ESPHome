@@ -6,6 +6,10 @@ A library and esphome configuration with which you can control an Itho fan, when
 
 ![what an RFT-CO2 looks like](img/rft-co2.jpg "what my RFT-CO2 remote looks like")
 
+This software is meant to control your fan from within Home Assistant:
+
+![home assistant setup](img/homeassistant.png "my setup within home assistant")
+
 # Hardware
 
 You'll need:
