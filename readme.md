@@ -15,11 +15,6 @@ You'll need:
  ![a CC1101 module](img/cc1101.jpg "what my CC1101 module looks like")
 
 Then connect:
-| ESP gpio num | Meal    | Price |
-| -------------|---------|-------|
-| Vcc          | pasta   | $6    |
-| Gnd          | chicken | $8    |
-
 
 | ESP gpio num | ESP pin label | CC1101 pin |
 |--------------|---------------|------------|
