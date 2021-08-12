@@ -14,12 +14,13 @@ You'll need:
  - A CC1101 module that works on 868 MHz. Mine looks like this:
  ![a CC1101 module](img/cc1101.jpg "what my CC1101 module looks like")
 
-| Day     | Meal    | Price |
-| --------|---------|-------|
-| Monday  | pasta   | $6    |
-| Tuesday | chicken | $8    |
-
 Then connect:
+| ESP gpio num | Meal    | Price |
+| -------------|---------|-------|
+| Vcc          | pasta   | $6    |
+| Gnd          | chicken | $8    |
+
+
 | ESP gpio num | ESP pin label | CC1101 pin |
 |--------------|---------------|------------|
 | Vcc          | 3.3v          | Vcc        |
