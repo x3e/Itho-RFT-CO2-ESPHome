@@ -27,7 +27,7 @@ Then connect:
 | GPIO5        | D1            | GDO0       |
 | GPIO15       | D8            | CSn        |
 
-*actually not sure if gdo2 is used in my code
+*gdo2 is not (yet) used in this library.
 
 # Configuring
 
