@@ -1,0 +1,74 @@
+substitutions:
+  devicename: ithofan
+  upper_devicename: "Itho Fan"
+
+esphome:
+  name: ${devicename}
+  platform: ESP8266
+  board: nodemcuv2
+  includes:
+    - ithofanComponent/
+
+custom_component:
+- id: fan
+  lambda: |-
+    auto fan = new IthoFan(5, 0x1C, 0x957D19, 0x9568C4);
+    return {fan};
+
+switch:
+  - platform: custom
+    lambda: |-
+      auto autoSwitch = new IthoSwitch(FanStatus::automatic);
+      App.register_component(autoSwitch);
+      auto nightSwitch = new IthoSwitch(FanStatus::night);
+      App.register_component(nightSwitch);
+      auto lowSwitch = new IthoSwitch(FanStatus::low);
+      App.register_component(lowSwitch);
+      auto mediumSwitch = new IthoSwitch(FanStatus::medium);
+      App.register_component(mediumSwitch);
+      auto highSwitch = new IthoSwitch(FanStatus::high);
+      App.register_component(highSwitch);
+      return {autoSwitch, nightSwitch, lowSwitch, mediumSwitch, highSwitch};
+    switches: 
+      - name: "${upper_devicename} auto"
+        icon: mdi:molecule-co2
+      - name: "${upper_devicename} night"
+        icon: mdi:weather-night
+      - name: "${upper_devicename} low"
+        icon: mdi:fan-speed-1
+      - name: "${upper_devicename} medium"
+        icon: mdi:fan-speed-2
+      - name: "${upper_devicename} high"
+        icon: mdi:fan-speed-3
+
+number:
+  - platform: template
+    name: "${upper_devicename} timer"
+    id: timer_number
+    icon: mdi:av-timer
+    min_value: 0
+    max_value: 255
+    step: 1
+    set_action:
+      - lambda: fanPtr->setTimer(x);
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: !secret api_password
+
+ota:
+  password: !secret api_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${upper_devicename} Hotspot"
+    password: !secret ap_password
+
+captive_portal:
