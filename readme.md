@@ -13,8 +13,10 @@ This software is meant to control your fan from within Home Assistant:
 # Hardware
 
 You'll need:
+
  - An ESP8266 of some kind.
     (ESP32 might work as well, but you'll have to figure out the pinout for yourself)
+    
  - A CC1101 module that works on 868 MHz. Mine looks like this:
  ![a CC1101 module](img/cc1101.jpg "what my CC1101 module looks like")
 
