@@ -16,30 +16,36 @@ custom_component:
     return {fan};
 
 switch:
-  - platform: custom
-    lambda: |-
-      auto autoSwitch = new IthoSwitch(FanStatus::automatic);
-      App.register_component(autoSwitch);
-      auto nightSwitch = new IthoSwitch(FanStatus::night);
-      App.register_component(nightSwitch);
-      auto lowSwitch = new IthoSwitch(FanStatus::low);
-      App.register_component(lowSwitch);
-      auto mediumSwitch = new IthoSwitch(FanStatus::medium);
-      App.register_component(mediumSwitch);
-      auto highSwitch = new IthoSwitch(FanStatus::high);
-      App.register_component(highSwitch);
-      return {autoSwitch, nightSwitch, lowSwitch, mediumSwitch, highSwitch};
-    switches: 
-      - name: "${upper_devicename} auto"
-        icon: mdi:molecule-co2
-      - name: "${upper_devicename} night"
-        icon: mdi:weather-night
-      - name: "${upper_devicename} low"
-        icon: mdi:fan-speed-1
-      - name: "${upper_devicename} medium"
-        icon: mdi:fan-speed-2
-      - name: "${upper_devicename} high"
-        icon: mdi:fan-speed-3
+  - platform: template
+    name: "${upper_devicename} auto"
+    id: switch_auto
+    icon: mdi:molecule-co2
+    turn_on_action:
+      - lambda: fanPtr->setStatus(FanStatus::automatic);
+  - platform: template
+    name: "${upper_devicename} night"
+    id: switch_night
+    icon: mdi:weather-night
+    turn_on_action:
+      - lambda: fanPtr->setStatus(FanStatus::night);
+  - platform: template
+    name: "${upper_devicename} low"
+    id: switch_low
+    icon: mdi:fan-speed-1
+    turn_on_action:
+      - lambda: fanPtr->setStatus(FanStatus::low);
+  - platform: template
+    name: "${upper_devicename} medium"
+    id: switch_medium
+    icon: mdi:fan-speed-2
+    turn_on_action:
+      - lambda: fanPtr->setStatus(FanStatus::medium);
+  - platform: template
+    name: "${upper_devicename} high"
+    id: switch_high
+    icon: mdi:fan-speed-3
+    turn_on_action:
+      - lambda: fanPtr->setStatus(FanStatus::high);
 
 number:
   - platform: template
