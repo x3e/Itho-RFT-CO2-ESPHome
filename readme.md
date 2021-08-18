@@ -16,8 +16,9 @@ You'll need:
 
  - An ESP8266 of some kind.
     (ESP32 might work as well, but you'll have to figure out the pinout for yourself)
-    
+
  - A CC1101 module that works on 868 MHz. Mine looks like this:
+
  ![a CC1101 module](img/cc1101.jpg "what my CC1101 module looks like")
 
 Then connect:
@@ -37,12 +38,9 @@ Then connect:
 
 # Configuring
 
-For now, this is not ready for "end users". That's because the library needs to be configured with a "start byte", and the addresses of the Itho fan and remote. If I figure out a way to make this easy for you, I'll update this page. Hint, you'll have to update this line in your ithoFan.yaml:
-```
-auto fan = new IthoFan(5, 0x1C, 0x957D19, 0x9568C4);
-```
+## Wifi credentials
 
-You'll also need to add a file "secrets.yaml" to the main directory. You need to specify some stuff here:
+You will need to add a file "secrets.yaml" to the main directory. You need to specify some stuff here:
 
 ```yaml
 wifi_ssid: "secret wifi name"
@@ -50,6 +48,21 @@ wifi_password: "secret password"
 api_password: "a password that will give access to your ESP"
 ap_password: "another password that will give access to your ESP"
 ```
+
+## Fan and remote addresses
+
+For now, this is not ready for "end users". That's because the library needs to be configured with a "start byte", and the addresses of the Itho fan and remote. If I figure out a way to make this easy for you, I will update this page. Hint, you'll have to update this line in your ithoFan.yaml:
+```
+auto fan = new IthoFan(5, 0x1C, <fan address>, <remote address>);
+```
+
+You may be able to find these addresses by running the firmware and checking the debug log. You will start to see messages like:
+
+```
+Status message: Sender: <fan address> Receiver: <remote address> Status: 2 Timer: 0
+```
+
+Check whether this is really your fan, by manually changing the mode and/or timer on your remote and see if a message appears with the correct mode / timer. Then edit ithoFan.yaml with these addresses.
 
 # Compiling
 
