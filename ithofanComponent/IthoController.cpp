@@ -1,6 +1,7 @@
 #include "IthoController.h"
 
 #include <Arduino.h>
+#include "esphome.h"
 
 #include "Message.h"
 #include "Sender.h"
@@ -120,19 +121,29 @@ void IthoController::parseMessage() {
   } while(status == Parser::Status::INITIALIZED);
   if (status == Parser::Status::COMPLETED) {
     Message message = parser.getMessage();
-    if (message.getSenderAddress() == fanAddress && message.getType() == Message::Type::STATUS)
+    if (message.getType() == Message::Type::STATUS)
         handleStatusMessage(message.getAs<StatusMessage>());
   }
 }
 
 void IthoController::handleStatusMessage(const StatusMessage& message) {
     if (message.valid()) {
-        uint8_t messageTimer = message.getRemainingTime();
-        FanStatus messageStatus = message.getFanStatus();
-        if (messageTimer != timer || messageStatus != fanStatus) {
-            fanStatus = message.getFanStatus();
-            timer = message.getRemainingTime();
-            changed();
+        esphome::ESP_LOGD(
+            "IthoController", "Status message: Sender: 0x%06x Receiver: 0x%06x Status: %d Timer: %d", 
+            message.getSenderAddress(), 
+            message.getReceiverAddress(), 
+            message.getFanStatus(), 
+            message.getRemainingTime()
+        );
+
+        if (message.getSenderAddress() == fanAddress) {
+            uint8_t messageTimer = message.getRemainingTime();
+            FanStatus messageStatus = message.getFanStatus();
+            if (messageTimer != timer || messageStatus != fanStatus) {
+                fanStatus = message.getFanStatus();
+                timer = message.getRemainingTime();
+                changed();
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
 #include <vector>
 #include <stdint.h>
 
-class StatusMessage : Message {
+class StatusMessage : public Message {
 public:
     StatusMessage(std::vector<uint8_t> messageBytes);
     bool valid() const;
