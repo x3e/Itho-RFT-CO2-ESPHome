@@ -58,6 +58,20 @@ number:
     set_action:
       - lambda: fanPtr->setTimer(x);
 
+sensor:
+  - platform: template
+    name: "${upper_devicename} humidity"
+    id: humidity_sensor
+    icon: mdi:water-percent
+    unit_of_measurement: '%'
+    accuracy_decimals: 0
+  - platform: template
+    name: "${upper_devicename} speed"
+    id: rpm_sensor
+    icon: mdi:rotate-right
+    unit_of_measurement: 'rpm'
+    accuracy_decimals: 0
+
 # Enable logging
 logger:
 

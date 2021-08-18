@@ -18,13 +18,16 @@ class IthoFan : public Component {
         void setup() override {
             fanPtr = this;
             fanControl.init();
-            fanControl.addChangedCallback([=](FanStatus newStatus, uint8_t timer) {
+            fanControl.addChangedCallback([=]() {
+                FanStatus newStatus = fanControl.getFanStatus();
                 id(switch_auto).publish_state(newStatus == FanStatus::automatic);
                 id(switch_night).publish_state(newStatus == FanStatus::night);
                 id(switch_low).publish_state(newStatus == FanStatus::low);
                 id(switch_medium).publish_state(newStatus == FanStatus::medium);
                 id(switch_high).publish_state(newStatus == FanStatus::high);
-                id(timer_number).publish_state(timer);
+                id(timer_number).publish_state(fanControl.getTimer());
+                id(humidity_sensor).publish_state(fanControl.getHumidity());
+                id(rpm_sensor).publish_state(fanControl.getRpm());
             });
         }
         void loop() override {
@@ -35,9 +38,6 @@ class IthoFan : public Component {
         }
         void setTimer(float timer) {
             fanControl.setTimer(static_cast<uint8_t>(timer));
-        }
-        void registerCallback(std::function<void(FanStatus,uint8_t)> callback) {
-            fanControl.addChangedCallback(callback);
         }
     private:
         IthoController fanControl;

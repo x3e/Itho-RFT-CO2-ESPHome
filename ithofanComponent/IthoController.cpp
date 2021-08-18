@@ -58,7 +58,7 @@ void IthoController::init() {
     radioSerial.begin(38400, SWSERIAL_8N1, radioIo0Pin, radioIo0Pin, false, 128);
 }
 
-void IthoController::addChangedCallback(std::function<void(FanStatus,uint8_t)> callback) {
+void IthoController::addChangedCallback(std::function<void(void)> callback) {
     callbacks.push_back(callback);
 }
 
@@ -91,6 +91,10 @@ bool IthoController::setTimer(uint8_t newTimer) {
     }
     return timer == newTimer;
 }
+
+uint8_t IthoController::getHumidity() const { return humidity; }
+
+uint8_t IthoController::getRpm() const { return rpm; }
 
 void IthoController::listen() {
     while (radioSerial.available()) {
@@ -142,6 +146,8 @@ void IthoController::handleStatusMessage(const StatusMessage& message) {
             if (messageTimer != timer || messageStatus != fanStatus) {
                 fanStatus = message.getFanStatus();
                 timer = message.getRemainingTime();
+                humidity = message.getHumidity();
+                rpm = message.getRpm();
                 changed();
             }
         }
@@ -159,6 +165,6 @@ void IthoController::sendMessage(const Message& message) {
 
 void IthoController::changed() {
     for (auto callback : callbacks) {
-        callback(fanStatus, timer);
+        callback();
     }
 }
