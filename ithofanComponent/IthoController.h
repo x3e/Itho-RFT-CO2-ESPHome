@@ -12,7 +12,7 @@ class StatusMessage;
 class IthoController {
 public:
     IthoController(int8_t radioIo0Pin, uint8_t firstByte, uint32_t fanAddress, uint32_t remoteAddress);
-    void init();
+    bool init();
     void addChangedCallback(std::function<void(void)> callback);
 
     FanStatus getFanStatus() const;

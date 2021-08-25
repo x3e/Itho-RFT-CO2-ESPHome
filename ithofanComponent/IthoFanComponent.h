@@ -17,7 +17,8 @@ class IthoFan : public Component {
         }
         void setup() override {
             fanPtr = this;
-            fanControl.init();
+            if (!fanControl.init())
+                ESP_LOGE("IthoFanComponent", "Failed to initialize CC1101.");
             fanControl.addChangedCallback([=]() {
                 FanStatus newStatus = fanControl.getFanStatus();
                 id(switch_auto).publish_state(newStatus == FanStatus::automatic);

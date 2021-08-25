@@ -20,8 +20,15 @@ IthoController::IthoController(int8_t radioIo0Pin, uint8_t firstByte, uint32_t f
     fanAddress(fanAddress),
     remoteAddress(remoteAddress) {}
 
-void IthoController::init() {
+bool IthoController::init() {
     radio.reset();
+    uint8_t version = radio.readRegister(StatusRegister::version);
+    if (version == 0) return false;
+    esphome::ESP_LOGD(
+            "IthoController", "CC1101 partnum: 0x%02x version: 0x%02x", 
+            radio.readRegister(StatusRegister::partnum),
+            version
+    );
     radio.writeRegister(ConfigRegister::freq2, 0x21);
     radio.writeRegister(ConfigRegister::freq1, 0x65);
     radio.writeRegister(ConfigRegister::freq0, 0x6A);
@@ -56,6 +63,7 @@ void IthoController::init() {
     radio.writeCommand(CommandStrobe::srx);
 
     radioSerial.begin(38400, SWSERIAL_8N1, radioIo0Pin, radioIo0Pin, false, 128);
+    return true;
 }
 
 void IthoController::addChangedCallback(std::function<void(void)> callback) {
