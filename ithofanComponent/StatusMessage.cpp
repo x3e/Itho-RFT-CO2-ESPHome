@@ -1,6 +1,5 @@
 #include "StatusMessage.h"
 
-#include <Arduino.h>
 #include <map>
 
 const std::map<uint8_t, FanStatus> fanStatusBytes = {

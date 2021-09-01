@@ -14,6 +14,8 @@ const uint8_t HEADER_BYTES[] = {0x00, 0x33, 0x55, 0x53};
 const unsigned int NUMBER_OF_TRIES = 3;
 const unsigned int WAIT_TIME = 2000; //ms
 
+const char TAG[] = "IthoController";
+
 IthoController::IthoController(int8_t radioIo0Pin, uint8_t firstByte, uint32_t fanAddress, uint32_t remoteAddress) : 
     radioIo0Pin(radioIo0Pin),
     firstByte(firstByte),
@@ -25,7 +27,8 @@ bool IthoController::init() {
     uint8_t version = radio.readRegister(StatusRegister::version);
     if (version == 0) return false;
     esphome::ESP_LOGD(
-            "IthoController", "CC1101 partnum: 0x%02x version: 0x%02x", 
+            TAG,
+            "CC1101 partnum: 0x%02x version: 0x%02x", 
             radio.readRegister(StatusRegister::partnum),
             version
     );
@@ -131,8 +134,9 @@ void IthoController::parseMessage() {
     while(radioSerial.available() < 2) yield();
     status = parser.parseBytes(radioSerial.read(), radioSerial.read());
   } while(status == Parser::Status::INITIALIZED);
+  Message message = parser.getMessage();
+  esphome::ESP_LOGD(TAG, "Message bytes: %s", message.getString().c_str());
   if (status == Parser::Status::COMPLETED) {
-    Message message = parser.getMessage();
     if (message.getType() == Message::Type::STATUS)
         handleStatusMessage(message.getAs<StatusMessage>());
   }
@@ -141,7 +145,8 @@ void IthoController::parseMessage() {
 void IthoController::handleStatusMessage(const StatusMessage& message) {
     if (message.valid()) {
         esphome::ESP_LOGD(
-            "IthoController", "Status message: Sender: 0x%06x Receiver: 0x%06x Status: %d Timer: %d", 
+            TAG,
+            "Status message: Sender: 0x%06x Receiver: 0x%06x Status: %d Timer: %d", 
             message.getSenderAddress(), 
             message.getReceiverAddress(), 
             message.getFanStatus(), 

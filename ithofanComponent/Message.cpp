@@ -1,7 +1,8 @@
 #include "Message.h"
-#include <Arduino.h>
-#include <stdexcept>
+
 #include <map>
+#include <sstream>
+#include <iomanip>
 
 const std::map<uint16_t, Message::Type> typeMap = {
     {0x22F1, Message::Type::LEVEL},
@@ -81,7 +82,7 @@ void Message::generateChecksum() {
     contentBytes.at(contentBytes.size()-1) = 0-sum;
 }
 
-String Message::getString() const {
+std::string Message::getString() const {
     return getByteString(0, contentBytes.size());
 }
 
@@ -103,14 +104,13 @@ void Message::setAddress(unsigned int startByte, uint32_t address) {
     }
 }
 
-String Message::getByteString(const unsigned int start, const unsigned int length) const {
-    String result;
+std::string Message::getByteString(const unsigned int start, const unsigned int length) const {
+    std::stringstream stream;
     if (start + length > contentBytes.size()) return "";
     for (unsigned int i=start; i<start + length; i++) {
-        uint8_t byte = contentBytes.at(i);
-        if (i!=start) result += ':';
-        if (byte < 0x10) result += '0';
-        result += String(byte, HEX);
+        int byte = contentBytes.at(i);
+        if (i!=start) stream << ':';
+        stream << std::uppercase << std::setfill('0') << std::setw(2) << std::hex << byte;
     }
-    return result;
+    return stream.str();
 }

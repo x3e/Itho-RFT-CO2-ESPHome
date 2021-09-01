@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include <vector>
-#include <WString.h>
+#include <string>
 #include <SoftwareSerial.h>
 
 class Message {
@@ -21,7 +21,7 @@ class Message {
         Type getType() const;
         bool validateChecksum() const;
 
-        String getString() const;
+        std::string getString() const;
         const std::vector<uint8_t>& getBytes() const;
 
         template<typename T>
@@ -41,5 +41,5 @@ class Message {
 
         uint32_t getAddress(unsigned int startByte) const;
         void setAddress(unsigned int startByte, uint32_t address);
-        String getByteString(const unsigned int startIndex, const unsigned int length) const;
+        std::string getByteString(const unsigned int startIndex, const unsigned int length) const;
 };
