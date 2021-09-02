@@ -43,5 +43,5 @@ uint8_t StatusMessage::getRpm() const {
 }
 
 bool StatusMessage::valid() const {
-    return contentBytes.size() == 41 && validateChecksum();
+    return (contentBytes.size() == 40 || contentBytes.size() == 41) && validateChecksum();
 }
