@@ -135,7 +135,7 @@ void IthoController::parseMessage() {
     status = parser.parseBytes(radioSerial.read(), radioSerial.read());
   } while(status == Parser::Status::INITIALIZED);
   Message message = parser.getMessage();
-  esphome::ESP_LOGD(TAG, "Message bytes: %s", message.getString().c_str());
+  esphome::ESP_LOGD(TAG, "Received message: %s", message.getString().c_str());
   if (status == Parser::Status::COMPLETED) {
     if (message.getType() == Message::Type::STATUS)
         handleStatusMessage(message.getAs<StatusMessage>());
@@ -172,6 +172,8 @@ void IthoController::sendMessage(const Message& message) {
   
   Sender sender {radioSerial};
   sender.send(message);
+
+  esphome::ESP_LOGD(TAG, "Sent message: %s", message.getString().c_str());
 
   receivingMode(true);
 }
