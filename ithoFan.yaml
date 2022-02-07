@@ -8,6 +8,9 @@ esphome:
   board: nodemcuv2
   includes:
     - ithofanComponent/
+  libraries:
+    - EspSoftwareSerial
+    - SPI
 
 custom_component:
 - id: fan
