@@ -30,18 +30,6 @@ uint8_t StatusMessage::getRemainingTime() const {
     else return 0;
 }
 
-uint8_t StatusMessage::getHumidity() const {
-    if (valid())
-        return contentBytes.at(15);
-    else return 0;
-}
-
-uint8_t StatusMessage::getRpm() const {
-    if(valid())
-        return contentBytes.at(29);
-    else return 0;
-}
-
 bool StatusMessage::valid() const {
     return (contentBytes.size() == 40 || contentBytes.size() == 41) && validateChecksum();
 }

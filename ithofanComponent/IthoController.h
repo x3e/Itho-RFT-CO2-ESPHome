@@ -19,8 +19,6 @@ public:
     bool setFanStatus(FanStatus newStatus);
     uint8_t getTimer() const;
     bool setTimer(uint8_t newTimer);
-    uint8_t getHumidity() const;
-    uint8_t getRpm() const;
     void listen();
 
 private:
@@ -41,6 +39,4 @@ private:
     bool connected = false;
     FanStatus fanStatus = FanStatus::unknown;
     uint8_t timer = 0;
-    uint8_t humidity = 0;
-    uint8_t rpm = 0;
 };

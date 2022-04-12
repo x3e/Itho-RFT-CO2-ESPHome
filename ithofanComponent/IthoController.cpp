@@ -103,10 +103,6 @@ bool IthoController::setTimer(uint8_t newTimer) {
     return timer == newTimer;
 }
 
-uint8_t IthoController::getHumidity() const { return humidity; }
-
-uint8_t IthoController::getRpm() const { return rpm; }
-
 void IthoController::listen() {
     while (radioSerial.available()) {
         if (radioSerial.read() == HEADER_BYTES[headerIndex]) {
@@ -159,8 +155,6 @@ void IthoController::handleStatusMessage(const StatusMessage& message) {
             if (messageTimer != timer || messageStatus != fanStatus) {
                 fanStatus = message.getFanStatus();
                 timer = message.getRemainingTime();
-                humidity = message.getHumidity();
-                rpm = message.getRpm();
                 changed();
             }
         }

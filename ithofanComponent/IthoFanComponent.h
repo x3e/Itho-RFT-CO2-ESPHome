@@ -27,8 +27,6 @@ class IthoFan : public Component {
                 id(switch_medium).publish_state(newStatus == FanStatus::medium);
                 id(switch_high).publish_state(newStatus == FanStatus::high);
                 id(timer_number).publish_state(fanControl.getTimer());
-                id(humidity_sensor).publish_state(fanControl.getHumidity());
-                id(rpm_sensor).publish_state(fanControl.getRpm());
             });
         }
         void loop() override {
