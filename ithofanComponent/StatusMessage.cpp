@@ -24,10 +24,11 @@ FanStatus StatusMessage::getFanStatus() const {
     return FanStatus::unknown;
 }
 
-uint8_t StatusMessage::getRemainingTime() const {
+uint16_t StatusMessage::getRemainingTime() const {
     if (valid())
-        return contentBytes.at(32);
-    else return 0;
+        return ((uint16_t)contentBytes.at(31) << 8 | contentBytes.at(32));
+    else
+        return 0;
 }
 
 bool StatusMessage::valid() const {

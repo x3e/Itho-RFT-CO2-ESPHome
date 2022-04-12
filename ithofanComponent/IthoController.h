@@ -17,8 +17,8 @@ public:
 
     FanStatus getFanStatus() const;
     bool setFanStatus(FanStatus newStatus);
-    uint8_t getTimer() const;
     bool setTimer(uint8_t newTimer);
+    uint16_t getTimer() const;
     void listen();
 
 private:
@@ -38,5 +38,5 @@ private:
     unsigned int headerIndex = 0;
     bool connected = false;
     FanStatus fanStatus = FanStatus::unknown;
-    uint8_t timer = 0;
+    uint16_t timer = 0;
 };

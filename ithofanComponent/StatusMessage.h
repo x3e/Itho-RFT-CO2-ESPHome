@@ -11,5 +11,5 @@ public:
     StatusMessage(std::vector<uint8_t> messageBytes);
     bool valid() const;
     FanStatus getFanStatus() const;
-    uint8_t getRemainingTime() const;
+    uint16_t getRemainingTime() const;
 };

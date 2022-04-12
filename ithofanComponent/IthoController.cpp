@@ -88,8 +88,6 @@ bool IthoController::setFanStatus(FanStatus newStatus) {
     return newStatus == fanStatus;
 }
 
-uint8_t IthoController::getTimer() const { return timer; }
-
 bool IthoController::setTimer(uint8_t newTimer) {
     if (newTimer == 0) return false;
     for (unsigned int tries=0; tries<NUMBER_OF_TRIES && newTimer != timer; tries++) {
@@ -102,6 +100,8 @@ bool IthoController::setTimer(uint8_t newTimer) {
     }
     return timer == newTimer;
 }
+
+uint16_t IthoController::getTimer() const { return timer; }
 
 void IthoController::listen() {
     while (radioSerial.available()) {
