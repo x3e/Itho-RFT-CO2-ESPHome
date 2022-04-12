@@ -19,6 +19,13 @@ public:
     bool setFanStatus(FanStatus newStatus);
     bool setTimer(uint8_t newTimer);
     uint16_t getTimer() const;
+    uint16_t getCo2() const;
+    float getExhaustTemp() const;
+    float getSupplyTemp() const;
+    float getIndoorTemp() const;
+    float getOutdoorTemp() const;
+    float getInletFlow() const;
+    float getExhaustFlow() const;
     void listen();
 
 private:
@@ -39,4 +46,11 @@ private:
     bool connected = false;
     FanStatus fanStatus = FanStatus::unknown;
     uint16_t timer = 0;
+    uint16_t co2 = 0;
+    float exhaustTemp = 0;
+    float supplyTemp = 0;
+    float indoorTemp = 0;
+    float outdoorTemp = 0;
+    float inletFlow = 0;
+    float exhaustsFlow = 0;
 };

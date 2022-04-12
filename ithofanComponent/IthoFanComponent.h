@@ -27,6 +27,13 @@ class IthoFan : public Component {
                 id(switch_medium).publish_state(newStatus == FanStatus::medium);
                 id(switch_high).publish_state(newStatus == FanStatus::high);
                 id(timer_number).publish_state(fanControl.getTimer());
+                id(co2_sensor).publish_state(fanControl.getCo2());
+                id(exhausttemp_sensor).publish_state(fanControl.getExhaustTemp());
+                id(supplytemp_sensor).publish_state(fanControl.getSupplyTemp());
+                id(indoortemp_sensor).publish_state(fanControl.getIndoorTemp());
+                id(outdoortemp_sensor).publish_state(fanControl.getOutdoorTemp());
+                id(inletflow_sensor).publish_state(fanControl.getInletFlow());
+                id(exhaustflow_sensor).publish_state(fanControl.getExhaustFlow());
             });
         }
         void loop() override {

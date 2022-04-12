@@ -61,6 +61,49 @@ number:
     set_action:
       - lambda: fanPtr->setTimer(x);
 
+sensor:
+  - platform: template
+    name: "${upper_devicename} co2"
+    id: co2_sensor
+    icon: mdi:molecule-co2
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 0
+  - platform: template
+    name: "${upper_devicename} exhaust temperature"
+    id: exhausttemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} supply temperature"
+    id: supplytemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} indoor temperature"
+    id: indoortemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} outdoor temperature"
+    id: outdoortemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} inlet flow"
+    id: inletflow_sensor
+    icon: mdi:weather-windy
+    unit_of_measurement: "l/s"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} exhaust flow"
+    id: exhaustflow_sensor
+    icon: mdi:weather-windy
+    unit_of_measurement: "l/s"
+    accuracy_decimals: 2
 
 # Enable logging
 logger:
