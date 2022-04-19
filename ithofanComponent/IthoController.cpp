@@ -156,17 +156,13 @@ void IthoController::handleStatusMessage(const StatusMessage& message) {
     if (message.valid()) {
         esphome::ESP_LOGD(
             TAG,
-            "Status message: Sender: 0x%06x Receiver: 0x%06x Status: %d Timer: %d", 
+            "Status message: Expected Sender: [0x%06x] Sender: 0x%06x Receiver: 0x%06x",
+            fanAddress,
             message.getSenderAddress(), 
-            message.getReceiverAddress(), 
-            message.getFanStatus(), 
-            message.getRemainingTime()
+            message.getReceiverAddress()
         );
 
         if (message.getSenderAddress() == fanAddress) {
-            uint8_t messageTimer = message.getRemainingTime();
-            FanStatus messageStatus = message.getFanStatus();
-            if (messageTimer != timer || messageStatus != fanStatus) {
                 fanStatus = message.getFanStatus();
                 timer = message.getRemainingTime();
                 co2 = message.getCo2();
@@ -177,7 +173,6 @@ void IthoController::handleStatusMessage(const StatusMessage& message) {
                 inletFlow = message.getInletFlow();
                 exhaustsFlow = message.getExhaustFlow();
                 changed();
-            }
         }
     }
 }
