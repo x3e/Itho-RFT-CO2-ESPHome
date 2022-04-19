@@ -12,42 +12,49 @@ esphome:
     - EspSoftwareSerial
     - SPI
 
+#auto fan = new IthoFan(<radio Io0 pin>, <first byte>, <fan address>, <remote address>);
 custom_component:
 - id: fan
   lambda: |-
-    auto fan = new IthoFan(5, 0x1C, 0x957D19, 0x9568C4);
+    auto fan = new IthoFan(5, 0x1C, 0x49EE9C, 0x96599B);
     return {fan};
 
-switch:
+text_sensor:
+  - platform: template
+    name: "${upper_devicename}"
+    id: fan_state
+    icon: mdi:fan
+
+button:
   - platform: template
     name: "${upper_devicename} auto"
     id: switch_auto
     icon: mdi:molecule-co2
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::automatic);
   - platform: template
     name: "${upper_devicename} night"
     id: switch_night
     icon: mdi:weather-night
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::night);
   - platform: template
     name: "${upper_devicename} low"
     id: switch_low
     icon: mdi:fan-speed-1
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::low);
   - platform: template
     name: "${upper_devicename} medium"
     id: switch_medium
     icon: mdi:fan-speed-2
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::medium);
   - platform: template
     name: "${upper_devicename} high"
     id: switch_high
     icon: mdi:fan-speed-3
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::high);
 
 number:
@@ -63,17 +70,47 @@ number:
 
 sensor:
   - platform: template
-    name: "${upper_devicename} humidity"
-    id: humidity_sensor
-    icon: mdi:water-percent
-    unit_of_measurement: '%'
+    name: "${upper_devicename} co2"
+    id: co2_sensor
+    icon: mdi:molecule-co2
+    unit_of_measurement: "ppm"
     accuracy_decimals: 0
   - platform: template
-    name: "${upper_devicename} speed"
-    id: rpm_sensor
-    icon: mdi:rotate-right
-    unit_of_measurement: 'rpm'
-    accuracy_decimals: 0
+    name: "${upper_devicename} exhaust temperature"
+    id: exhausttemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} supply temperature"
+    id: supplytemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} indoor temperature"
+    id: indoortemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} outdoor temperature"
+    id: outdoortemp_sensor
+    icon: mdi:temperature-celsius
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} inlet flow"
+    id: inletflow_sensor
+    icon: mdi:weather-windy
+    unit_of_measurement: "l/s"
+    accuracy_decimals: 2
+  - platform: template
+    name: "${upper_devicename} exhaust flow"
+    id: exhaustflow_sensor
+    icon: mdi:weather-windy
+    unit_of_measurement: "l/s"
+    accuracy_decimals: 2
 
 # Enable logging
 logger:
