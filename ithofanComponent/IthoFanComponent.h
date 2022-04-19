@@ -21,11 +21,7 @@ class IthoFan : public Component {
                 ESP_LOGE("IthoFanComponent", "Failed to initialize CC1101.");
             fanControl.addChangedCallback([=]() {
                 FanStatus newStatus = fanControl.getFanStatus();
-                id(switch_auto).publish_state(newStatus == FanStatus::automatic);
-                id(switch_night).publish_state(newStatus == FanStatus::night);
-                id(switch_low).publish_state(newStatus == FanStatus::low);
-                id(switch_medium).publish_state(newStatus == FanStatus::medium);
-                id(switch_high).publish_state(newStatus == FanStatus::high);
+                id(fan_state).publish_state(FanStatusToString(newStatus));
                 id(timer_number).publish_state(fanControl.getTimer());
                 id(co2_sensor).publish_state(fanControl.getCo2());
                 id(exhausttemp_sensor).publish_state(fanControl.getExhaustTemp());

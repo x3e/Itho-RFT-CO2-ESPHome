@@ -12,42 +12,49 @@ esphome:
     - EspSoftwareSerial
     - SPI
 
+#auto fan = new IthoFan(<radio Io0 pin>, <first byte>, <fan address>, <remote address>);
 custom_component:
 - id: fan
   lambda: |-
-    auto fan = new IthoFan(5, 0x1C, 0x957D19, 0x9568C4);
+    auto fan = new IthoFan(5, 0x1C, 0x49EE9C, 0x96599B);
     return {fan};
 
-switch:
+text_sensor:
+  - platform: template
+    name: "${upper_devicename}"
+    id: fan_state
+    icon: mdi:fan
+
+button:
   - platform: template
     name: "${upper_devicename} auto"
     id: switch_auto
     icon: mdi:molecule-co2
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::automatic);
   - platform: template
     name: "${upper_devicename} night"
     id: switch_night
     icon: mdi:weather-night
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::night);
   - platform: template
     name: "${upper_devicename} low"
     id: switch_low
     icon: mdi:fan-speed-1
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::low);
   - platform: template
     name: "${upper_devicename} medium"
     id: switch_medium
     icon: mdi:fan-speed-2
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::medium);
   - platform: template
     name: "${upper_devicename} high"
     id: switch_high
     icon: mdi:fan-speed-3
-    turn_on_action:
+    on_press:
       - lambda: fanPtr->setStatus(FanStatus::high);
 
 number:
