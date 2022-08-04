@@ -75,6 +75,8 @@ void IthoController::addChangedCallback(std::function<void(void)> callback) {
 
 FanStatus IthoController::getFanStatus() const { return fanStatus; }
 
+FanWarning IthoController::getFanWarning() const { return fanWarning; }
+
 bool IthoController::setFanStatus(FanStatus newStatus) {
     if (newStatus == FanStatus::unknown || newStatus == FanStatus::timer) return false;
     for (unsigned int tries=0; tries<NUMBER_OF_TRIES && newStatus != fanStatus; tries++) {
@@ -164,6 +166,7 @@ void IthoController::handleStatusMessage(const StatusMessage& message) {
 
         if (message.getSenderAddress() == fanAddress) {
                 fanStatus = message.getFanStatus();
+                fanWarning = message.getFanWarning();
                 timer = message.getRemainingTime();
                 co2 = message.getCo2();
                 exhaustTemp = message.getExhaustTemp();

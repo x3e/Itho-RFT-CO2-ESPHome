@@ -11,17 +11,34 @@ const std::map<uint8_t, FanStatus> fanStatusBytes = {
     {0x0D, FanStatus::timer}
 };
 
+const std::map<uint8_t, FanWarning> fanWarningBytes = {
+    {0x00, FanWarning::none},
+    {0x80, FanWarning::fault},
+    {0x40, FanWarning::filter},
+    {0x20, FanWarning::defrost}
+};
+
 StatusMessage::StatusMessage(std::vector<uint8_t> data) : 
     Message(std::move(data)) {}
 
 FanStatus StatusMessage::getFanStatus() const {
     if (valid()) {
-        auto it = fanStatusBytes.find(contentBytes.at(28));
+        auto it = fanStatusBytes.find((contentBytes.at(28) & 0x1F));
         if (it != fanStatusBytes.end()) {
             return it->second;
         }
     }
     return FanStatus::unknown;
+}
+
+FanWarning StatusMessage::getFanWarning() const {
+    if (valid()) {
+        auto it = fanWarningBytes.find((contentBytes.at(28) & 0xE0));
+        if (it != fanWarningBytes.end()) {
+            return it->second;
+        }
+    }
+    return FanWarning::unknown;
 }
 
 uint16_t StatusMessage::getRemainingTime() const {

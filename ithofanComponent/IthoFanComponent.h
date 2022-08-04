@@ -1,6 +1,7 @@
 #include "esphome.h"
 
 #include "FanStatus.h"
+#include "FanWarning.h"
 #include "IthoController.h"
 
 class IthoFan;
@@ -22,6 +23,8 @@ class IthoFan : public Component {
             fanControl.addChangedCallback([=]() {
                 FanStatus newStatus = fanControl.getFanStatus();
                 id(fan_state).publish_state(FanStatusToString(newStatus));
+                FanWarning newWarning = fanControl.getFanWarning();
+                id(fan_warning).publish_state(FanWarningToString(newWarning));
                 id(timer_number).publish_state(fanControl.getTimer());
                 id(co2_sensor).publish_state(fanControl.getCo2());
                 id(exhausttemp_sensor).publish_state(fanControl.getExhaustTemp());
