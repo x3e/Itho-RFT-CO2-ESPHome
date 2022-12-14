@@ -1,6 +1,7 @@
 #include "esphome.h"
 
 #include "FanStatus.h"
+#include "FanWarning.h"
 #include "IthoController.h"
 
 class IthoFan;
@@ -21,14 +22,17 @@ class IthoFan : public Component {
                 ESP_LOGE("IthoFanComponent", "Failed to initialize CC1101.");
             fanControl.addChangedCallback([=]() {
                 FanStatus newStatus = fanControl.getFanStatus();
-                id(switch_auto).publish_state(newStatus == FanStatus::automatic);
-                id(switch_night).publish_state(newStatus == FanStatus::night);
-                id(switch_low).publish_state(newStatus == FanStatus::low);
-                id(switch_medium).publish_state(newStatus == FanStatus::medium);
-                id(switch_high).publish_state(newStatus == FanStatus::high);
+                id(fan_state).publish_state(FanStatusToString(newStatus));
+                FanWarning newWarning = fanControl.getFanWarning();
+                id(fan_warning).publish_state(FanWarningToString(newWarning));
                 id(timer_number).publish_state(fanControl.getTimer());
-                id(humidity_sensor).publish_state(fanControl.getHumidity());
-                id(rpm_sensor).publish_state(fanControl.getRpm());
+                id(co2_sensor).publish_state(fanControl.getCo2());
+                id(exhausttemp_sensor).publish_state(fanControl.getExhaustTemp());
+                id(supplytemp_sensor).publish_state(fanControl.getSupplyTemp());
+                id(indoortemp_sensor).publish_state(fanControl.getIndoorTemp());
+                id(outdoortemp_sensor).publish_state(fanControl.getOutdoorTemp());
+                id(inletflow_sensor).publish_state(fanControl.getInletFlow());
+                id(exhaustflow_sensor).publish_state(fanControl.getExhaustFlow());
             });
         }
         void loop() override {

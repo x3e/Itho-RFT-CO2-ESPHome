@@ -75,6 +75,8 @@ void IthoController::addChangedCallback(std::function<void(void)> callback) {
 
 FanStatus IthoController::getFanStatus() const { return fanStatus; }
 
+FanWarning IthoController::getFanWarning() const { return fanWarning; }
+
 bool IthoController::setFanStatus(FanStatus newStatus) {
     if (newStatus == FanStatus::unknown || newStatus == FanStatus::timer) return false;
     for (unsigned int tries=0; tries<NUMBER_OF_TRIES && newStatus != fanStatus; tries++) {
@@ -87,8 +89,6 @@ bool IthoController::setFanStatus(FanStatus newStatus) {
     }
     return newStatus == fanStatus;
 }
-
-uint8_t IthoController::getTimer() const { return timer; }
 
 bool IthoController::setTimer(uint8_t newTimer) {
     if (newTimer == 0) return false;
@@ -103,9 +103,21 @@ bool IthoController::setTimer(uint8_t newTimer) {
     return timer == newTimer;
 }
 
-uint8_t IthoController::getHumidity() const { return humidity; }
+uint16_t IthoController::getTimer() const { return timer; }
 
-uint8_t IthoController::getRpm() const { return rpm; }
+uint16_t IthoController::getCo2() const { return co2; }
+
+float IthoController::getExhaustTemp() const { return exhaustTemp; }
+
+float IthoController::getSupplyTemp() const { return supplyTemp; }
+
+float IthoController::getIndoorTemp() const { return indoorTemp; }
+
+float IthoController::getOutdoorTemp() const { return outdoorTemp; }
+
+float IthoController::getInletFlow() const { return inletFlow; }
+
+float IthoController::getExhaustFlow() const { return exhaustsFlow; }
 
 void IthoController::listen() {
     while (radioSerial.available()) {
@@ -146,23 +158,24 @@ void IthoController::handleStatusMessage(const StatusMessage& message) {
     if (message.valid()) {
         esphome::ESP_LOGD(
             TAG,
-            "Status message: Sender: 0x%06x Receiver: 0x%06x Status: %d Timer: %d", 
+            "Status message: Expected Sender: [0x%06x] Sender: 0x%06x Receiver: 0x%06x",
+            fanAddress,
             message.getSenderAddress(), 
-            message.getReceiverAddress(), 
-            message.getFanStatus(), 
-            message.getRemainingTime()
+            message.getReceiverAddress()
         );
 
         if (message.getSenderAddress() == fanAddress) {
-            uint8_t messageTimer = message.getRemainingTime();
-            FanStatus messageStatus = message.getFanStatus();
-            if (messageTimer != timer || messageStatus != fanStatus) {
                 fanStatus = message.getFanStatus();
+                fanWarning = message.getFanWarning();
                 timer = message.getRemainingTime();
-                humidity = message.getHumidity();
-                rpm = message.getRpm();
+                co2 = message.getCo2();
+                exhaustTemp = message.getExhaustTemp();
+                supplyTemp = message.getSupplyTemp();
+                indoorTemp = message.getIndoorTemp();
+                outdoorTemp = message.getOutdoorTemp();
+                inletFlow = message.getInletFlow();
+                exhaustsFlow = message.getExhaustFlow();
                 changed();
-            }
         }
     }
 }

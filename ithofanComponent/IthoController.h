@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #include "FanStatus.h"
+#include "FanWarning.h"
 
 class Message;
 class StatusMessage;
@@ -16,11 +17,17 @@ public:
     void addChangedCallback(std::function<void(void)> callback);
 
     FanStatus getFanStatus() const;
+    FanWarning getFanWarning() const;
     bool setFanStatus(FanStatus newStatus);
-    uint8_t getTimer() const;
     bool setTimer(uint8_t newTimer);
-    uint8_t getHumidity() const;
-    uint8_t getRpm() const;
+    uint16_t getTimer() const;
+    uint16_t getCo2() const;
+    float getExhaustTemp() const;
+    float getSupplyTemp() const;
+    float getIndoorTemp() const;
+    float getOutdoorTemp() const;
+    float getInletFlow() const;
+    float getExhaustFlow() const;
     void listen();
 
 private:
@@ -40,7 +47,13 @@ private:
     unsigned int headerIndex = 0;
     bool connected = false;
     FanStatus fanStatus = FanStatus::unknown;
-    uint8_t timer = 0;
-    uint8_t humidity = 0;
-    uint8_t rpm = 0;
+    FanWarning fanWarning = FanWarning::none;
+    uint16_t timer = 0;
+    uint16_t co2 = 0;
+    float exhaustTemp = 0;
+    float supplyTemp = 0;
+    float indoorTemp = 0;
+    float outdoorTemp = 0;
+    float inletFlow = 0;
+    float exhaustsFlow = 0;
 };
